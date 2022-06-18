@@ -6,22 +6,26 @@ import { Card } from "./components/Card";
 import { GET_BOOKS } from "./graphql/queries/books";
 
 export default function App() {
-  const { data } = useQuery(GET_BOOKS);
   // const [characters, setCharacters] = useState([]);
-  // const [books, setBooks] = useState([]);
-  // const [page, setPage] = useState(1);
-  // const { error, fetchMore } = useQuery(GET_BOOKS, {
-  //   variables: { page: page },
-  //   onCompleted: (data) => {
-  //     if (!books.length) {
-  //       const { info, results } = data.books;
-  //       setBooks(results);
-  //       setPage(info.next);
-  //     }
-  //   },
-  // });
+  const [books, setBooks] = useState([]);
+  const [page, setPage] = useState(1);
+  const { error, fetchMore, data } = useQuery(GET_BOOKS, {
+    // variables: { page: page },
+    // onCompleted: (data) => {
+    //   if (!books.length) {
+    //     const { info, results } = data.books;
+    //     console.log(data);
+    //     setBooks(results);
+    //     setPage(info.next);
+    //   }
+    // },
+  });
 
-  // if (error) return <p>Error...</p>;
+  // const { results } = data.books;
+  // console.log(results);
+  console.log(data);
+
+  if (error) return <p>Error...</p>;
 
   // const getMoreBooks = async () => {
   //   const { data } = await fetchMore({
@@ -33,12 +37,6 @@ export default function App() {
   // };
 
   return (
-    <div>
-      {data &&
-        data.books.map(({ title, author }, index) => (
-          <Card key={index} title={title} author={author} />
-        ))}
-    </div>
     // <InfiniteScroll
     //   dataLength={books.length}
     //   next={getMoreBooks}
@@ -50,9 +48,12 @@ export default function App() {
     //     </p>
     //   }
     // >
-    //   {books.map(({ title, author }, index) => (
-    //     <Card key={index} title={title} author={author} />
-    //   ))}
+    <div>
+      {data &&
+        data.books[0].results.map(({ title, author }, index) => (
+          <Card key={index} title={title} author={author} />
+        ))}
+    </div>
     // </InfiniteScroll>
   );
 }
