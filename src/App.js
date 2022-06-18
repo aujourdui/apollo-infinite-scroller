@@ -10,31 +10,30 @@ export default function App() {
   const [books, setBooks] = useState([]);
   const [page, setPage] = useState(1);
   const { error, fetchMore, data } = useQuery(GET_BOOKS, {
+    variables: { limit: 5 },
     // variables: { page: page },
     // onCompleted: (data) => {
     //   if (!books.length) {
-    //     const { info, results } = data.books;
-    //     console.log(data);
+    //     const { info, results } = data.books[0];
+    //     console.log(results);
     //     setBooks(results);
     //     setPage(info.next);
     //   }
     // },
   });
 
-  // const { results } = data.books;
-  // console.log(results);
-  console.log(data);
+  // console.log(data);
 
   if (error) return <p>Error...</p>;
 
-  // const getMoreBooks = async () => {
-  //   const { data } = await fetchMore({
-  //     variables: { page: page },
-  //   });
-  //   const { info, results } = data.books;
-  //   setBooks((prevBooks) => [...prevBooks, ...results]);
-  //   setPage(info.next);
-  // };
+  const getMoreBooks = async () => {
+    const { data } = await fetchMore({
+      variables: { page: page },
+    });
+    const { info, results } = data.books;
+    setBooks((prevBooks) => [...prevBooks, ...results]);
+    setPage(info.next);
+  };
 
   return (
     // <InfiniteScroll
@@ -49,11 +48,16 @@ export default function App() {
     //   }
     // >
     <div>
+      {/* {books &&
+        books.map(({ title, author }, index) => (
+          <Card key={index} title={title} author={author} />
+        ))} */}
       {data &&
-        data.books[0].results.map(({ title, author }, index) => (
+        data.books.map(({ title, author }, index) => (
           <Card key={index} title={title} author={author} />
         ))}
     </div>
+    //{" "}
     // </InfiniteScroll>
   );
 }
