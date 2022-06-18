@@ -1,16 +1,17 @@
 import { useState } from "react";
 import { useQuery } from "@apollo/client";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Card } from "./components/Card";
+// import { Card } from "./components/Card";
+import CardList from "./components/CardList";
 // import { GET_CHARACTERS } from "./graphql/queries/characters";
 import { GET_BOOKS } from "./graphql/queries/books";
 
 export default function App() {
   // const [characters, setCharacters] = useState([]);
-  const [books, setBooks] = useState([]);
-  const [page, setPage] = useState(1);
+  // const [books, setBooks] = useState([]);
+  // const [page, setPage] = useState(1);
   const { error, fetchMore, data } = useQuery(GET_BOOKS, {
-    variables: { limit: 5 },
+    variables: { offset: 0, limit: 16 },
     // variables: { page: page },
     // onCompleted: (data) => {
     //   if (!books.length) {
@@ -26,14 +27,14 @@ export default function App() {
 
   if (error) return <p>Error...</p>;
 
-  const getMoreBooks = async () => {
-    const { data } = await fetchMore({
-      variables: { page: page },
-    });
-    const { info, results } = data.books;
-    setBooks((prevBooks) => [...prevBooks, ...results]);
-    setPage(info.next);
-  };
+  // const getMoreBooks = async () => {
+  //   const { data } = await fetchMore({
+  //     variables: { page: page },
+  //   });
+  //   const { info, results } = data.books;
+  //   setBooks((prevBooks) => [...prevBooks, ...results]);
+  //   setPage(info.next);
+  // };
 
   return (
     // <InfiniteScroll
@@ -52,10 +53,24 @@ export default function App() {
         books.map(({ title, author }, index) => (
           <Card key={index} title={title} author={author} />
         ))} */}
-      {data &&
-        data.books.map(({ title, author }, index) => (
-          <Card key={index} title={title} author={author} />
-        ))}
+      {/* {data &&
+        data.books.map(({ title, author }, index) => ( */}
+      {data && (
+        <CardList
+          // key={index}
+          // title={title}
+          // author={author}
+          books={data.books || []}
+          onLoadMore={() =>
+            fetchMore({
+              variables: {
+                offset: data.books.length,
+              },
+            })
+          }
+        />
+      )}
+      {/* ))} */}
     </div>
     //{" "}
     // </InfiniteScroll>
