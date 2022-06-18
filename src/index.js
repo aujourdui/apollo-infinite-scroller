@@ -7,7 +7,8 @@ import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  uri: "https://rickandmortyapi.com/graphql",
+  // uri: "https://rickandmortyapi.com/graphql",
+  uri: "http://localhost:4000/",
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
