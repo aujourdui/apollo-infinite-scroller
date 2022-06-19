@@ -16,8 +16,8 @@ import { gql } from "@apollo/client";
 //   }
 // `;
 export const GET_BOOKS = gql`
-  query getBooks($limit: Int) {
-    books(limit: $limit) {
+  query getBooks($offset: Int, $limit: Int) {
+    books(offset: $offset, limit: $limit) {
       title
       author
     }

@@ -3,8 +3,8 @@ import style from "./style.module.scss";
 
 export const Card = React.memo(function (props) {
   const {
-    title = "",
-    author = "",
+    title,
+    author,
     // name = "Rick Sanchez",
     // image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
   } = props;

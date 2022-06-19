@@ -25,7 +25,7 @@ const typeDefs = gql`
   # }
 
   type Query {
-    books(limit: Int): [Books!]
+    books(offset: Int, limit: Int): [Books!]
     # books(): [Books!]
   }
 `;
@@ -34,8 +34,9 @@ const resolvers = {
   Query: {
     books: async (_parent, args, _context, _info) => {
       if (args.limit) {
+        const start = args.offset;
         const end = args.limit;
-        return [...booksBasic].slice(0, end);
+        return [...booksBasic].slice(start, end);
       } else {
         return [...booksBasic];
       }
