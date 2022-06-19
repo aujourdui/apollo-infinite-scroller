@@ -4,11 +4,22 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
+import { offsetLimitPagination } from "@apollo/client/utilities";
+
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        books: offsetLimitPagination(),
+      },
+    },
+  },
+});
 
 const client = new ApolloClient({
-  cache: new InMemoryCache(),
   // uri: "https://rickandmortyapi.com/graphql",
   uri: "http://localhost:4000/",
+  cache,
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
